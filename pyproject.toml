@@ -1,15 +1,11 @@
-[build-system]
-requires = ["flit"]
-build-backend = "flit.buildapi"
-
-[tool.flit.metadata]
-module = "aiologstash"
-author = "Andrew Svetlov"
-author-email = "andrew.svetlov@gmail.com"
-home-page = "https://github.com/aio-libs/aiologstash"
-description-file = "README.rst"
-requires-python = ">=3.6.0"
-requires = ["python-logstash", "async-timeout"]
+[tool.poetry]
+name = "aiologstash2"
+version = "0.1.0"
+description = ""
+license = "MIT"
+authors = ["Aviram Hassan <aviramyhassan@gmail.com>"]
+repository = "https://github.com/aviramha/aiologstash2"
+readme = "README.rst"
 classifiers = [
     "Intended Audience :: Developers",
     "License :: OSI Approved :: MIT License",
@@ -22,3 +18,22 @@ classifiers = [
     "Framework :: AsyncIO"
 ]
 
+[tool.poetry.dependencies]
+python = "^3.7"
+async-timeout = "^4.0.2"
+
+[tool.poetry.dev-dependencies]
+flake8 = "^4.0.1"
+isort = "^5.10.1"
+black = "^21.12b0"
+mypy = "^0.930"
+pytest = "^6.2.5"
+pytest-cov = "^3.0.0"
+python-logstash = "^0.4.6"
+pytest-asyncio = "^0.16.0"
+pytest-mock = "^3.6.1"
+Pigments = "^1.6"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
