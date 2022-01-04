@@ -1,5 +1,9 @@
 # Change Log
 
+## 2.0.1 (2022-01-04)
+- Support Python 3.10 (remove loop)
+- Remove support for Python 3.6. (EOL)
+
 ## 2.0.0 (2019-11-02)
 
   - Add type annotations.
