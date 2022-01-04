@@ -89,7 +89,7 @@ async def test_reconnection_failure(setup_logger, mocker):
     await hdlr._reconnect()
     assert hdlr._reader is not None
     t1 = loop.time()
-    assert t1 - t0 > pytest.approx(0.1)
+    assert t1 - t0 > 0.08
     assert m.call_count == 2
 
 
