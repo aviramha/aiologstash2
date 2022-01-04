@@ -25,7 +25,6 @@ async def create_tcp_handler(
     extra: Mapping[str, Any] = types.MappingProxyType({}),
     **kwargs: Any
 ) -> logging.Handler:
-    loop = asyncio.get_event_loop()
     extra = types.MappingProxyType(extra)
     handler = TCPLogstashHandler(
         host=host,
@@ -33,7 +32,6 @@ async def create_tcp_handler(
         level=level,
         close_timeout=close_timeout,
         qsize=qsize,
-        loop=loop,
         reconnect_delay=reconnect_delay,
         reconnect_jitter=reconnect_jitter,
         extra=extra,
