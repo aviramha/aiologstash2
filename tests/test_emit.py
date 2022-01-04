@@ -17,7 +17,7 @@ async def test_emit_full_queue(setup_logger, loop, mocker):
         await fut
 
     hdlr._send = coro
-    m_log = mocker.patch("aiologstash.base_handler.logger")
+    m_log = mocker.patch("aiologstash2.base_handler.logger")
 
     log.info("Msg 1")
     assert not m_log.called
@@ -38,7 +38,7 @@ async def test_emit_unexpected_err_in_worker(setup_logger, loop, mocker):
         raise err
 
     hdlr._send = coro
-    m_log = mocker.patch("aiologstash.base_handler.logger")
+    m_log = mocker.patch("aiologstash2.base_handler.logger")
 
     log.info("Msg")
     await fut
@@ -56,7 +56,7 @@ async def test_reconnection(setup_logger, loop, mocker):
         m()
 
     hdlr._send = coro
-    m_log = mocker.patch("aiologstash.base_handler.logger")
+    m_log = mocker.patch("aiologstash2.base_handler.logger")
 
     m.side_effect = [OSError(), None]
     log.info("Msg 1")
@@ -71,7 +71,7 @@ async def test_reconnection_failure(setup_logger, loop, mocker):
     log, hdlr, srv = await setup_logger(reconnect_delay=0.1, reconnect_jitter=0)
 
     open_connection = asyncio.open_connection
-    m = mocker.patch("aiologstash.tcp_handler.asyncio.open_connection")
+    m = mocker.patch("aiologstash2.tcp_handler.asyncio.open_connection")
 
     flag = False
 

@@ -5,7 +5,7 @@ from json import loads
 
 import pytest
 
-from aiologstash import create_tcp_handler
+from aiologstash2 import create_tcp_handler
 
 
 asyncio.set_event_loop(None)

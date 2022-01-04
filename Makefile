@@ -1,4 +1,4 @@
-SOURCES = aiologstash tests
+SOURCES = aiologstash2 tests
 
 
 test: lint
@@ -9,7 +9,7 @@ lint: mypy black flake8
 
 
 mypy:
-	mypy --strict aiologstash
+	mypy --strict aiologstash2
 
 
 black:

@@ -1,15 +1,37 @@
-# Change Log
+# aiologstash2
 
-## 2.0.0 (2019-11-02)
+[![image](https://travis-ci.org/aio-libs/aiologstash.svg?branch=master)](https://travis-ci.org/aio-libs/aiologstash)
 
-  - Add type annotations.
-  - Drop Python 3.5 support.
-  - Drop the loop parameter from `create_tcp\_handler()` function.
+[![image](https://codecov.io/gh/aio-libs/aiologstash/branch/master/graph/badge.svg)](https://codecov.io/gh/aio-libs/aiologstash)
 
-## 1.1.0 (2018-06-06)
+[![image](https://badge.fury.io/py/aiologstash.svg)](https://badge.fury.io/py/aiologstash)
 
-  - Fix a failure when logging is called from non-asyncio thread.
+asyncio logging handler for logstash.
 
-## 1.0.0 (2018-02-09)
+# Installation
 
-  - Initial release.
+``` shell
+pip install aiologstash2
+```
+
+# Usage
+
+``` python
+import logging
+from aiologstash2 import create_tcp_handler
+
+async def init_logger():
+     handler = await create_tcp_handler('127.0.0.1', 5000)
+     root = logging.getLogger()
+     root.setLevel(logging.DEBUG)
+     root.addHandler(handler)
+```
+
+# Thanks
+
+This is an actively maintained fork of [aio-libs'
+aiologstash](https://github.com/aio-libs/aiologstash)
+
+The library was donated by [Ocean S.A.](https://ocean.io/)
+
+Thanks to the company for contribution.

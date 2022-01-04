@@ -3,7 +3,7 @@ from unittest import mock
 
 import pytest
 
-from aiologstash import create_tcp_handler
+from 2 import create_tcp_handler
 
 
 pytestmark = pytest.mark.asyncio
