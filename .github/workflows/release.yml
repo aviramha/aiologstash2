@@ -1,0 +1,33 @@
+name: Deploy to PyPI
+
+on:
+  push:
+    tags:
+      - '*.*.*'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+    - name: Install PIP & Poetry
+      run: |
+        python -m pip install --upgrade pip
+        pip install poetry
+        poetry install --no-dev
+    - name: Verify version
+      run: |
+        [ $(cut -d' ' -f2 <<< $(poetry version)) == ${GITHUB_REF#refs/tags/} ]
+        [ $(cut -d' ' -f2 <<< $(poetry version)) == $(poetry run python -m 'import aiologstash2; print(aiologstash2.__version__)') ]
+    - name: Publish
+      env:
+        PYPI_USERNAME: "__token__"
+        PYPI_PASSWORD: ${{ secrets.PYPI_TOKEN }}
+      run: |
+        poetry publish --build
