@@ -1,7 +1,8 @@
 SOURCES = aiologstash2 tests
 
 
-test: pytest tests
+test:
+	pytest tests
 
 
 lint: mypy black flake8
