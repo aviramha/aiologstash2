@@ -9,7 +9,7 @@ from aiologstash2 import create_tcp_handler
 pytestmark = pytest.mark.asyncio
 
 
-async def test_simple(setup_logger, loop):
+async def test_simple(setup_logger):
     log, hdlr, srv = await setup_logger()
     log.info("Info %s", "text")
     await srv.wait()
@@ -28,20 +28,12 @@ async def test_simple(setup_logger, loop):
     }
 
 
-async def test_cannot_connect(unused_tcp_port, loop):
+async def test_cannot_connect(unused_tcp_port):
     with pytest.raises(OSError):
         await create_tcp_handler("127.0.0.1", unused_tcp_port)
 
 
-async def test_implicit_loop(make_tcp_server, loop):
-    server = await make_tcp_server()
-    handler = await create_tcp_handler("127.0.0.1", server.port)
-    assert handler._loop is loop
-    handler.close()
-    await handler.wait_closed()
-
-
-async def test_extra(setup_logger, loop):
+async def test_extra(setup_logger):
     log, hdlr, srv = await setup_logger(extra={"app": "myapp"})
     log.info("Info %s", "text")
     await srv.wait()
