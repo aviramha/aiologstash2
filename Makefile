@@ -1,7 +1,7 @@
-SOURCES = aiologstash tests
+SOURCES = aiologstash2 tests
 
 
-test: lint
+test:
 	pytest tests
 
 
@@ -9,16 +9,16 @@ lint: mypy black flake8
 
 
 mypy:
-	mypy --strict aiologstash
+	mypy --strict aiologstash2
 
 
 black:
-	isort -c -rc $(SOURCES)
+	isort -c $(SOURCES)
 	black --check $(SOURCES)
 
 flake8:
 	flake8 $(SOURCES)
 
 fmt:
-	isort -rc $(SOURCES)
+	isort $(SOURCES)
 	black $(SOURCES)

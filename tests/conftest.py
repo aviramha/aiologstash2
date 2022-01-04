@@ -1,55 +1,23 @@
 import asyncio
-import gc
 import logging
 from json import loads
 
 import pytest
 
-from aiologstash import create_tcp_handler
-
-
-asyncio.set_event_loop(None)
+from aiologstash2 import create_tcp_handler
 
 
 logging.getLogger().setLevel(logging.DEBUG)
 
 
-def create_future(loop):
-    return loop.create_future()
-
-
-@pytest.fixture
-def event_loop(request):
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-
-    yield loop
-
-    if not loop.is_closed():
-        loop.call_soon(loop.stop)
-        loop.run_forever()
-        loop.close()
-
-    gc.collect()
-    asyncio.set_event_loop(None)
-
-
-@pytest.fixture
-def loop(event_loop):
-    return event_loop
-
-
 class FakeTcpServer:
-    def __init__(self, loop):
-        self.loop = loop
+    def __init__(self):
         self.data = bytearray()
         self.server = None
         self.futs = set()
 
     async def start(self):
-        self.server = await asyncio.start_server(
-            self.on_connect, host="127.0.0.1", loop=self.loop
-        )
+        self.server = await asyncio.start_server(self.on_connect, host="127.0.0.1")
 
     @property
     def port(self):
@@ -78,18 +46,18 @@ class FakeTcpServer:
                     fut.set_result(None)
 
     async def wait(self):
-        fut = create_future(self.loop)
+        fut = asyncio.get_event_loop().create_future()
         self.futs.add(fut)
         await fut
         self.futs.remove(fut)
 
 
 @pytest.fixture
-def make_tcp_server(loop):
+async def make_tcp_server():
     servers = []
 
     async def go():
-        server = FakeTcpServer(loop)
+        server = FakeTcpServer()
         await server.start()
         servers.append(server)
         return server
@@ -100,11 +68,11 @@ def make_tcp_server(loop):
         for server in servers:
             await server.close()
 
-    loop.run_until_complete(finalize())
+    await finalize()
 
 
 @pytest.fixture
-def make_tcp_handler(loop, make_tcp_server):
+async def make_tcp_handler(make_tcp_server):
     handlers = []
 
     async def go(*args, level=logging.DEBUG, **kwargs):
@@ -120,11 +88,11 @@ def make_tcp_handler(loop, make_tcp_server):
             handler.close()
             await handler.wait_closed()
 
-    loop.run_until_complete(finalize())
+    await finalize()
 
 
 @pytest.fixture
-def setup_logger(make_tcp_handler):
+async def setup_logger(make_tcp_handler):
     async def go(*args, **kwargs):
         handler, server = await make_tcp_handler(*args, **kwargs)
         logger = logging.getLogger("aiologstash_test")

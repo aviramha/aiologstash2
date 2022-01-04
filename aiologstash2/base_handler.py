@@ -18,7 +18,6 @@ class BaseLogstashHandler(logging.Handler):
         level: int,
         close_timeout: float,
         qsize: int,
-        loop: asyncio.AbstractEventLoop,
         reconnect_delay: float,
         reconnect_jitter: float,
         extra: Mapping[str, Any]
@@ -29,13 +28,12 @@ class BaseLogstashHandler(logging.Handler):
         self._random = random.Random()
         self._extra = extra
 
-        self._loop = loop
         self._thread_id = threading.get_ident()
 
         self._queue: asyncio.Queue[Union[logging.LogRecord, None]] = asyncio.Queue(
-            maxsize=qsize, loop=self._loop
+            maxsize=qsize
         )
-
+        self._loop = asyncio.get_event_loop()
         super().__init__(level=level)
 
         formatter = LogstashFormatterVersion1()
@@ -113,7 +111,7 @@ class BaseLogstashHandler(logging.Handler):
                 delay = self._random.gauss(
                     self._reconnect_delay, self._reconnect_jitter
                 )
-                await asyncio.sleep(delay, loop=self._loop)
+                await asyncio.sleep(delay)
 
     def _serialize(self, record: logging.LogRecord) -> bytes:
         for key, value in self._extra.items():
@@ -142,7 +140,7 @@ class BaseLogstashHandler(logging.Handler):
         if self._worker is None:
             return  # already closed
         try:
-            async with timeout(self._close_timeout, loop=self._loop):
+            async with timeout(self._close_timeout):
                 await self._worker
         except asyncio.TimeoutError:
             self._worker.cancel()
