@@ -27,7 +27,6 @@ jobs:
         [ $(cut -d' ' -f2 <<< $(poetry version)) == $(poetry run python -c 'import aiologstash2; print(aiologstash2.__version__)') ]
     - name: Publish
       env:
-        PYPI_USERNAME: "__token__"
         PYPI_PASSWORD: ${{ secrets.PYPI_TOKEN }}
       run: |
-        poetry publish --build
+        poetry publish -u __token__ -p $PYPI_PASSWORD --build
