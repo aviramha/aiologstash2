@@ -13,12 +13,12 @@ mypy:
 
 
 black:
-	isort -c -rc $(SOURCES)
+	isort -c $(SOURCES)
 	black --check $(SOURCES)
 
 flake8:
 	flake8 $(SOURCES)
 
 fmt:
-	isort -rc $(SOURCES)
+	isort $(SOURCES)
 	black $(SOURCES)
