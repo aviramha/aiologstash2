@@ -40,7 +40,7 @@ class BaseLogstashHandler(logging.Handler):
         self.setFormatter(formatter)
 
         self._closing = False
-        self._worker: Optional[asyncio.Task[None]] = asyncio.create_task(
+        self._worker: Optional[asyncio.Task[None]] = self._loop.create_task(
             self._work()
         )
 

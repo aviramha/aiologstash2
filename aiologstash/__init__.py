@@ -3,7 +3,6 @@
 
 __version__ = "2.0.0"
 
-import asyncio
 import logging
 import types
 from typing import Any, Mapping
