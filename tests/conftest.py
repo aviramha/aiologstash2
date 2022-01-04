@@ -40,15 +40,14 @@ def loop(event_loop):
 
 
 class FakeTcpServer:
-    def __init__(self, loop):
-        self.loop = loop
+    def __init__(self):
         self.data = bytearray()
         self.server = None
         self.futs = set()
 
     async def start(self):
         self.server = await asyncio.start_server(
-            self.on_connect, host="127.0.0.1", loop=self.loop
+            self.on_connect, host="127.0.0.1"
         )
 
     @property
@@ -89,7 +88,7 @@ def make_tcp_server(loop):
     servers = []
 
     async def go():
-        server = FakeTcpServer(loop)
+        server = FakeTcpServer()
         await server.start()
         servers.append(server)
         return server
