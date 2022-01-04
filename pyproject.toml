@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "aiologstash2"
-version = "0.1.0"
+version = "2.0.1"
 description = ""
 license = "MIT"
 authors = ["Aviram Hassan <aviramyhassan@gmail.com>"]
@@ -13,6 +13,8 @@ classifiers = [
     "Programming Language :: Python :: 3.6",
     "Programming Language :: Python :: 3.7",
     "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
     "Topic :: Software Development :: Libraries :: Python Modules",
     "Development Status :: 4 - Beta",
     "Framework :: AsyncIO"
@@ -21,6 +23,7 @@ classifiers = [
 [tool.poetry.dependencies]
 python = "^3.7"
 async-timeout = "^4.0.2"
+python-logstash = "^0.4.6"
 
 [tool.poetry.dev-dependencies]
 flake8 = "^4.0.1"
@@ -29,7 +32,6 @@ black = "^21.12b0"
 mypy = "^0.930"
 pytest = "^6.2.5"
 pytest-cov = "^3.0.0"
-python-logstash = "^0.4.6"
 pytest-asyncio = "^0.16.0"
 pytest-mock = "^3.6.1"
 Pigments = "^1.6"
