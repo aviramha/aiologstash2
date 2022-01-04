@@ -40,7 +40,8 @@ def loop(event_loop):
 
 
 class FakeTcpServer:
-    def __init__(self):
+    def __init__(self, loop):
+        self.loop = loop
         self.data = bytearray()
         self.server = None
         self.futs = set()
@@ -88,7 +89,7 @@ def make_tcp_server(loop):
     servers = []
 
     async def go():
-        server = FakeTcpServer()
+        server = FakeTcpServer(loop)
         await server.start()
         servers.append(server)
         return server
