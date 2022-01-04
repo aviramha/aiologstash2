@@ -24,3 +24,27 @@ jobs:
           poetry install
       - name: lint
         run: poetry run make lint
+
+  test:
+    name: test py${{ matrix.python-version }} on ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: ['ubuntu', 'macos', 'windows']
+        python-version: ['3.6', '3.7', '3.8', '3.9', '3.10']
+
+    runs-on: ${{ format('{0}-latest', matrix.os) }}
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: set up python
+      uses: actions/setup-python@v1
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - run: |
+          pip install poetry
+          poetry install
+
+    - run: poetry run make test
